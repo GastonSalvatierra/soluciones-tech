@@ -58,7 +58,7 @@ export default function Navbar() {
         }
         .nav-content { display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 24px; max-width: 1280px; margin: 0 auto; }
         .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .nav-logo img { height: 28px; width: auto; }
+        .nav-logo img { height: 58px; width: auto; }
         .nav-logo-text { font-size: 0.875rem; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
 
         .nav-links { display: none; align-items: center; gap: 2px; }

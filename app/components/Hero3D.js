@@ -122,46 +122,75 @@ export default function Hero3D() {
 
   return (
     <>
-      <style>{`
-        .hero-section { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+     <style>{`
+        /* --- Estructura Principal del Hero --- */
+        .hero-section { 
+          position: relative; 
+          min-height: 100svh; 
+          display: flex; 
+          align-items: center; 
+          overflow: hidden; 
+          background-color: #05070c;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* --- Efecto de Fondo --- */
         .hero-bg {
-          position: absolute; inset: 0;
-          background-size: cover; background-position: center 20%;
+          position: absolute; 
+          inset: 0;
+          background-size: cover; 
+          background-position: center 20%;
           background-repeat: no-repeat;
           transform: scale(1.04);
           transition: transform 8s ease-out;
         }
         .hero-section:hover .hero-bg { transform: scale(1); }
+
+        /* --- Capas de Gradientes y Texturas --- */
         .hero-overlay-1 {
-          position: absolute; inset: 0;
-          background: linear-gradient(105deg, rgba(8,10,16,0.97) 0%, rgba(8,10,16,0.82) 45%, rgba(8,10,16,0.45) 100%);
+          position: absolute; 
+          inset: 0;
+          background: linear-gradient(105deg, rgba(8,10,16,0.97) 0%, rgba(8,10,16,0.85) 45%, rgba(8,10,16,0.45) 100%);
         }
         .hero-overlay-2 {
-          position: absolute; inset: 0;
+          position: absolute; 
+          inset: 0;
           background: radial-gradient(ellipse 60% 50% at 20% 50%, rgba(6,182,212,0.07) 0%, transparent 70%),
                       radial-gradient(ellipse 40% 60% at 80% 20%, rgba(59,130,246,0.05) 0%, transparent 70%);
         }
         .hero-grain {
-          position: absolute; inset: 0; opacity: 0.025;
+          position: absolute; 
+          inset: 0; 
+          opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-          background-size: 128px 128px; pointer-events: none;
+          background-size: 128px 128px; 
+          pointer-events: none;
         }
         .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.9; }
         .hero-grid {
-          position: absolute; inset: 0; pointer-events: none;
+          position: absolute; 
+          inset: 0; 
+          pointer-events: none;
           background-image:
             linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
           background-size: 80px 80px;
           mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
         }
-        /* Aurora glow blobs (efecto realista, moderno) */
+
+        /* --- Efecto Aurora Glow Blobs --- */
         .hero-aurora {
-          position: absolute; inset: 0; pointer-events: none;
-          filter: blur(80px); opacity: 0.55;
+          position: absolute; 
+          inset: 0; 
+          pointer-events: none;
+          filter: blur(80px); 
+          opacity: 0.55;
         }
         .hero-aurora::before, .hero-aurora::after {
-          content: ''; position: absolute; border-radius: 50%;
+          content: ''; 
+          position: absolute; 
+          border-radius: 50%;
           mix-blend-mode: screen;
         }
         .hero-aurora::before {
@@ -179,89 +208,147 @@ export default function Hero3D() {
         @keyframes aurora-1 { from { transform: translate(0,0); } to { transform: translate(80px,-40px); } }
         @keyframes aurora-2 { from { transform: translate(0,0); } to { transform: translate(-100px,-60px); } }
 
+        /* --- Contenedores Generales --- */
         .hero-content {
-          position: relative; z-index: 10;
-          width: 100%; max-width: 1280px;
+          position: relative; 
+          z-index: 10;
+          width: 100%; 
+          max-width: 1280px;
           margin: 0 auto;
-          padding: 140px 24px 80px;
+          padding: 100px 24px 60px; /* Padding superior corregido para mayor equilibrio */
         }
-        .hero-inner { max-width: 720px; }
+        .hero-inner { 
+          max-width: 680px; /* Reducido de 720px para contener mejor las líneas de texto */
+        }
 
+        /* --- Animación de Entrada Fluida --- */
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+          opacity: 0;
+          animation: fadeUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.15s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.45s; }
+        .delay-4 { animation-delay: 0.6s; }
+
+        /* --- Badge de Ubicación --- */
         .hero-badge {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 6px 14px 6px 8px;
+          display: inline-flex; 
+          align-items: center; 
+          gap: 8px;
+          padding: 5px 12px 5px 8px;
           border-radius: 99px;
           border: 1px solid rgba(6,182,212,0.25);
           background: rgba(6,182,212,0.07);
-          margin-bottom: 32px; opacity: 0;
+          margin-bottom: 24px;
           backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
         }
         .hero-badge-dot {
-          width: 6px; height: 6px; border-radius: 99px;
-          background: #06b6d4; box-shadow: 0 0 8px #06b6d4;
+          width: 6px; height: 6px; 
+          border-radius: 99px;
+          background: #06b6d4; 
+          box-shadow: 0 0 8px #06b6d4;
           animation: pulse-dot 2s ease-in-out infinite;
         }
         @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
         .hero-badge-text { font-size: 0.75rem; font-weight: 600; color: #67e8f9; letter-spacing: 0.06em; text-transform: uppercase; }
 
+        /* --- Tipografía Armónica (Ajustada) --- */
         .hero-h1 {
-          font-size: clamp(2.6rem, 6vw, 4.6rem);
-          font-weight: 800; line-height: 1.04; letter-spacing: -0.03em;
-          color: #fff; margin-bottom: 24px; opacity: 0;
+          font-size: clamp(2.1rem, 5.2vw, 3.4rem); /* Escalado suavizado para evitar gigantismo */
+          font-weight: 800; 
+          line-height: 1.15; /* Más separación entre renglones para que respire */
+          letter-spacing: -0.02em;
+          color: #fff; 
+          margin-bottom: 20px;
         }
         .hero-h1-line2 {
           display: block;
           background: linear-gradient(90deg, #22d3ee, #60a5fa, #a78bfa);
-          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+          -webkit-background-clip: text; 
+          -webkit-text-fill-color: transparent; 
+          background-clip: text;
         }
-
         .hero-sub {
-          font-size: clamp(1rem, 1.8vw, 1.125rem);
-          color: rgba(255,255,255,0.6);
-          line-height: 1.7; max-width: 560px;
-          margin-bottom: 36px; opacity: 0;
+          font-size: clamp(0.95rem, 1.6vw, 1.05rem); /* Proporciones refinadas */
+          color: rgba(255,255,255,0.65);
+          line-height: 1.65; 
+          max-width: 580px;
+          margin-bottom: 32px;
         }
 
-        .hero-checks { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 44px; }
-        .hero-check { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: rgba(255,255,255,0.7); opacity: 0; }
-        .hero-check-icon { width: 16px; height: 16px; flex-shrink: 0; color: #22d3ee; }
+        /* --- Listado de Beneficios --- */
+        .hero-checks { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 36px; }
+        .hero-check { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: rgba(255,255,255,0.7); }
+        .hero-check-icon { width: 14px; height: 14px; flex-shrink: 0; color: #22d3ee; }
 
-        .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; opacity: 0; }
+        /* --- Botones y Acciones --- */
+        .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+        
         .btn-primary {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 13px 28px; border-radius: 12px;
+          display: inline-flex; 
+          align-items: center; 
+          gap: 8px;
+          padding: 11px 24px; 
+          border-radius: 10px;
           background: linear-gradient(135deg, #0891b2 0%, #2563eb 100%);
-          color: #fff; font-size: 0.9375rem; font-weight: 600;
-          letter-spacing: -0.01em; border: none; cursor: pointer;
+          color: #fff; 
+          font-size: 0.9rem; 
+          font-weight: 600;
+          letter-spacing: -0.01em; 
+          border: none; 
+          cursor: pointer;
           transition: transform 0.2s, box-shadow 0.2s;
-          box-shadow: 0 0 0 1px rgba(6,182,212,0.3), 0 8px 32px rgba(6,182,212,0.25);
-          position: relative; overflow: hidden;
+          box-shadow: 0 0 0 1px rgba(6,182,212,0.3), 0 8px 24px rgba(6,182,212,0.2);
+          position: relative; 
+          overflow: hidden;
         }
         .btn-primary::before {
-          content: ''; position: absolute; inset: 0;
+          content: ''; 
+          position: absolute; 
+          inset: 0;
           background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent);
-          opacity: 0; transition: opacity 0.2s;
+          opacity: 0; 
+          transition: opacity 0.2s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(6,182,212,0.45), 0 16px 40px rgba(6,182,212,0.35); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(6,182,212,0.45), 0 12px 32px rgba(6,182,212,0.3); }
         .btn-primary:hover::before { opacity: 1; }
         .btn-primary:active { transform: translateY(0); }
 
         .btn-secondary {
-          display: inline-flex; align-items: center; gap: 8px;
-          padding: 13px 28px; border-radius: 12px;
+          display: inline-flex; 
+          align-items: center; 
+          gap: 8px;
+          padding: 11px 24px; 
+          border-radius: 10px;
           background: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.1);
           color: rgba(255,255,255,0.85);
-          font-size: 0.9375rem; font-weight: 500;
-          cursor: pointer; transition: all 0.2s;
+          font-size: 0.9rem; 
+          font-weight: 500;
+          cursor: pointer; 
+          transition: all 0.2s;
           backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); color: #fff; }
 
+        /* --- Indicador Inferior de Scroll --- */
         .hero-scroll {
-          position: absolute; bottom: 36px; left: 50%;
+          position: absolute; 
+          bottom: 36px; 
+          left: 50%;
           transform: translateX(-50%);
-          display: flex; flex-direction: column; align-items: center; gap: 8px;
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+          gap: 8px;
+          animation: fadeUp 0.8s ease-out 0.8s forwards;
           opacity: 0;
         }
         .hero-scroll-label { font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
@@ -274,7 +361,8 @@ export default function Hero3D() {
       `}</style>
 
       <section id="inicio" className="hero-section">
-        <div className="hero-bg" style={{ backgroundImage: `url(${HERO_BG})` }} />
+        {/* Capas de diseño estético de fondo */}
+        <div className="hero-bg" style={{ backgroundImage: `url(${typeof HERO_BG !== 'undefined' ? HERO_BG : ''})` }} />
         <div className="hero-overlay-1" />
         <div className="hero-overlay-2" />
         <div className="hero-aurora" />
@@ -284,38 +372,44 @@ export default function Hero3D() {
 
         <div className="hero-content">
           <div className="hero-inner">
-            <div className="hero-badge">
+            
+            {/* Badge Superior */}
+            <div className="hero-badge animate-fade-up">
               <span className="hero-badge-dot" />
               <span className="hero-badge-text">Soluciones Tech · Buenos Aires</span>
             </div>
 
-            <h1 className="hero-h1">
-              Software, automatización y{" "}
-              <span className="hero-h1-line2">crecimiento digital para tu negocio</span>
+            {/* Título Principal */}
+            <h1 className="hero-h1 animate-fade-up delay-1">
+              Software, automatización 
+              <span className="hero-h1-line2">y crecimiento digital para tu negocio</span>
             </h1>
 
-            <p className="hero-sub">
+            {/* Subtítulo descriptivo */}
+            <p className="hero-sub animate-fade-up delay-2">
               Desarrollamos webs, sistemas a medida, bots con IA y automatizaciones que
               ahorran horas de trabajo. Sumá marketing, publicidad y soporte IT con un
               solo equipo que entiende tu negocio de punta a punta.
             </p>
 
-            <div className="hero-checks">
+            {/* Viñetas / Checks */}
+            <div className="hero-checks animate-fade-up delay-3">
               {highlights.map((h) => (
                 <span key={h} className="hero-check">
-                  <CheckCircle2 className="hero-check-icon" size={16} />
+                  <CheckCircle2 className="hero-check-icon" size={14} />
                   {h}
                 </span>
               ))}
             </div>
 
-            <div className="hero-btns">
+            {/* Botones de acción */}
+            <div className="hero-btns animate-fade-up delay-4">
               <button
                 className="btn-primary"
                 onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
               >
                 Hablemos de tu proyecto
-                <ArrowRight size={16} />
+                <ArrowRight size={15} />
               </button>
               <button
                 className="btn-secondary"
@@ -324,9 +418,11 @@ export default function Hero3D() {
                 Ver servicios
               </button>
             </div>
+
           </div>
         </div>
 
+        {/* Indicador de scroll */}
         <div className="hero-scroll">
           <span className="hero-scroll-label">Scroll</span>
           <div className="hero-scroll-line" />

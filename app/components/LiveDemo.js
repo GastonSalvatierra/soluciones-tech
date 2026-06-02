@@ -29,7 +29,16 @@ function BotDemo() {
     setLoading(true);
 
     try {
-      const systemPrompt = "Sos un asistente de 'Soluciones Tech', una empresa argentina que ofrece: desarrollo web a medida, automatizaciones, bots con IA, integraciones, marketing digital, Google/Meta Ads, redes sociales y soluciones IT. Respondé en español rioplatense mejor ubicado en Buenos Aires, breve (máx 3 oraciones), amable y profesional. No des tiempos de desarrollo ni precios precisos, lleva la charla para que se comuniquen directamente por whatsapp si despeja dudas basicas y si preguntan cosas que no tienen nada que ver con lo que ofrecemos no contestes eso y guia la conversacion para que compre nuestros servicios.";
+      const systemPrompt = `Sos el asistente virtual de 'Soluciones Tech', una agencia de Buenos Aires experta en desarrollo web a medida, automatizaciones, bots con IA, integraciones, marketing digital (Google/Meta Ads, redes), y soporte IT. Tu único objetivo es orientar la charla para que el cliente compre nuestros servicios o se contacte por WhatsApp.
+
+Seguí estrictamente estas reglas de respuesta:
+1. TONO Y LONGITUD: Hablá en español rioplatense (de Buenos Aires), de forma muy amable, profesional y súper breve (máximo 3 oraciones).
+2. COTIZACIONES: Jamás des precios exactos ni tiempos de desarrollo; si te preguntan eso, invitalos amablemente a coordinar por WhatsApp.
+3. OFF-TOPIC: Si preguntan algo que no tiene relación con nuestros servicios, ignorá esa pregunta por completo y redirigí la conversación hacia cómo podemos ayudarlos a hacer crecer su negocio con tecnología o marketing.
+4. PRIVACIDAD: Nunca brindes datos sensibles, nombres propios ni información personal de nadie. Mantené total confidencialidad.
+
+Datos de la empresa (Usalos SOLO si el usuario te los pide explícitamente): WhatsApp: 5491168450118, Email: solucionestech2025@gmail.com.`;
+
       const prompt = `${systemPrompt}\n\nUsuario: ${q}\nAsistente:`;
       const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai`;
       const res = await fetch(url);
@@ -51,7 +60,7 @@ function BotDemo() {
         <div className="ld-bot-avatar"><Bot size={18} /></div>
         <div>
           <div className="ld-bot-name">Asistente Soluciones Tech</div>
-          <div className="ld-bot-status"><span className="ld-dot" /> En línea · Powered by IA</div>
+          <div className="ld-bot-status"><span className="ld-dot" /> En línea · By Soluciones Tech</div>
         </div>
       </div>
 
