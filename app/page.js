@@ -5,6 +5,8 @@ import About3D from "@/components/About3D";
 import CtaBanner from "@/components/CtaBanner";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import TechStack from "@/components/TechStack";
+import LiveDemo from "@/components/LiveDemo";
 
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
       <Navbar />
       <Hero3D />
       <Services3D />
+      <LiveDemo />
+      <TechStack />
       <About3D />
       <CtaBanner />
       <Contact />

@@ -1,25 +1,55 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { Code2, TrendingUp, HardDrive, Megaphone, Share2, Headphones } from "lucide-react";
+import { Code2, TrendingUp, Megaphone, Share2, Plug, Bot, Workflow } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SERVICES_IMAGES = {
-  web: "https://d2xsxph8kpxj0f.cloudfront.net/310519663691015196/f4B9TG3CEJDnzHER6X2dLw/services-web-jY7PDms4nYacRBXFywN4XN.webp",
-  marketing: "https://d2xsxph8kpxj0f.cloudfront.net/310519663691015196/f4B9TG3CEJDnzHER6X2dLw/services-marketing-PqfhEKgvWtbZHdDow89on7.webp",
-  it: "https://d2xsxph8kpxj0f.cloudfront.net/310519663691015196/f4B9TG3CEJDnzHER6X2dLw/services-it-TsBnMnKcHt2etuQKStr8jp.webp",
-};
-
 const services = [
-  { id: "web", title: "Programación Web", description: "Sitios y apps a medida, desde landing pages de alto impacto hasta sistemas complejos. Código limpio, diseño responsivo, tecnologías modernas.", icon: Code2, label: "Desarrollo", image: SERVICES_IMAGES.web, accent: "#06b6d4" },
-  { id: "marketing", title: "Marketing Digital", description: "Estrategias que generan resultados reales. SEO, contenido y analítica para convertir visitas en clientes.", icon: TrendingUp, label: "Marketing", image: SERVICES_IMAGES.marketing, accent: "#3b82f6" },
-  { id: "it", title: "Soluciones IT", description: "Venta, instalación y soporte de equipos. Redes, servidores y mantenimiento para empresas de todos los tamaños.", icon: HardDrive, label: "IT & Hardware", image: SERVICES_IMAGES.it, accent: "#8b5cf6" },
-  { id: "ads", title: "Publicidad para Ventas", description: "Google Ads y Meta Ads con segmentación precisa y optimización continua para maximizar tu ROI.", icon: Megaphone, label: "Publicidad", accent: "#f59e0b" },
-  { id: "social", title: "Gestión de Redes Sociales", description: "Administración profesional de Instagram, Facebook y LinkedIn. Contenido, calendario editorial y reportes de métricas.", icon: Share2, label: "Social Media", accent: "#ec4899" },
-  { id: "support", title: "Soporte Técnico", description: "Asistencia remota y presencial. Diagnóstico, reparación, recuperación de datos y mantenimiento periódico.", icon: Headphones, label: "Soporte", accent: "#10b981" },
+  {
+    id: "web",
+    title: "Desarrollo Web a Medida",
+    description: "Landing pages que convierten, e-commerce y sistemas web hechos a medida. Código limpio, performance real, diseño responsive y SEO técnico desde la base.",
+    icon: Code2, label: "Desarrollo", accent: "#06b6d4"
+  },
+  {
+    id: "automation",
+    title: "Automatizaciones Inteligentes",
+    description: "Conectamos tus herramientas (WhatsApp, Sheets, CRM, email, formularios) para eliminar tareas manuales. Flujos simples que ahorran horas todas las semanas.",
+    icon: Workflow, label: "Automatización", accent: "#22d3ee"
+  },
+  {
+    id: "bots",
+    title: "Bots y Asistentes con IA",
+    description: "Chatbots para WhatsApp, Instagram y tu web que responden 24/7, califican leads y derivan al humano cuando hace falta. Integrados a tu negocio.",
+    icon: Bot, label: "IA & Bots", accent: "#a78bfa"
+  },
+  {
+    id: "marketing",
+    title: "Marketing Digital",
+    description: "Estrategia, SEO, contenido y analítica con foco en métricas que importan: leads, ventas y retención. Nada de vanity metrics.",
+    icon: TrendingUp, label: "Marketing", accent: "#3b82f6"
+  },
+  {
+    id: "ads",
+    title: "Publicidad para Ventas",
+    description: "Campañas en Google Ads, Meta Ads y TikTok Ads con segmentación precisa, creatividades testeadas y optimización semanal para maximizar tu ROAS.",
+    icon: Megaphone, label: "Publicidad", accent: "#f59e0b"
+  },
+  {
+    id: "social",
+    title: "Gestión de Redes Sociales",
+    description: "Instagram, Facebook, TikTok y LinkedIn: contenido, calendario editorial, community management y reportes claros con métricas accionables.",
+    icon: Share2, label: "Social Media", accent: "#ec4899"
+  },
+  {
+    id: "integrations",
+    title: "Integraciones & APIs",
+    description: "Conectamos tu web, CRM, ERP, pasarelas de pago (Mercado Pago, Stripe), WhatsApp Business API, Google Sheets y +100 herramientas. Tu stack hablando entre sí, sin copy-paste.",
+    icon: Plug, label: "Integraciones", accent: "#10b981"
+  },
 ];
 
 export default function Services3D() {
@@ -28,193 +58,127 @@ export default function Services3D() {
   useEffect(() => {
     const cards = sectionRef.current?.querySelectorAll(".svc-card");
     if (!cards) return;
-
     cards.forEach((card, i) => {
       gsap.fromTo(card,
         { opacity: 0, y: 48, filter: "blur(4px)" },
         {
           opacity: 1, y: 0, filter: "blur(0px)",
-          duration: 0.7,
-          ease: "power3.out",
+          duration: 0.7, ease: "power3.out",
           scrollTrigger: { trigger: card, start: "top 88%" },
-          delay: (i % 3) * 0.08,
+          delay: (i % 4) * 0.08,
         }
       );
     });
-
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, []);
+
+  const handleTilt = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(0)`;
+    card.style.setProperty("--mx", `${(x + 0.5) * 100}%`);
+    card.style.setProperty("--my", `${(y + 0.5) * 100}%`);
+  };
+  const resetTilt = (e) => { e.currentTarget.style.transform = ""; };
 
   return (
     <>
       <style>{`
-        .svc-section {
-          padding: 120px 0;
-          background: #0D1117;
-          position: relative;
-          overflow: hidden;
-        }
+        .svc-section { padding: 120px 0; background: #0D1117; position: relative; overflow: hidden; }
         .svc-section::before {
-          content: '';
-          position: absolute;
-          top: -1px; left: 0; right: 0; height: 1px;
+          content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
           background: linear-gradient(90deg, transparent, rgba(6,182,212,0.3), transparent);
         }
         .svc-bg-glow {
-          position: absolute;
-          top: 20%; left: 50%; transform: translateX(-50%);
+          position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
           width: 800px; height: 400px;
-          background: radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%);
+          background: radial-gradient(ellipse, rgba(59,130,246,0.05) 0%, transparent 70%);
           pointer-events: none;
         }
-        .svc-container {
-          max-width: 1280px; margin: 0 auto; padding: 0 24px;
-          position: relative; z-index: 1;
-        }
+        .svc-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
-        .svc-header {
-          margin-bottom: 72px;
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 24px;
-          flex-wrap: wrap;
-        }
+        .svc-header { margin-bottom: 72px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
         .svc-eyebrow {
           display: inline-flex; align-items: center; gap: 8px;
-          font-size: 0.6875rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #22d3ee;
-          margin-bottom: 16px;
+          font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+          color: #22d3ee; margin-bottom: 16px;
         }
-        .svc-eyebrow::before {
-          content: '';
-          display: inline-block;
-          width: 24px; height: 1px;
-          background: #22d3ee;
-        }
-        .svc-title {
-          font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          line-height: 1.1;
-          color: #fff;
-          margin: 0;
-        }
-        .svc-subtitle {
-          font-size: 1rem;
-          color: rgba(255,255,255,0.4);
-          max-width: 360px;
-          line-height: 1.6;
-        }
+        .svc-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: #22d3ee; }
+        .svc-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: #fff; margin: 0; }
+        .svc-subtitle { font-size: 1rem; color: rgba(255,255,255,0.45); max-width: 400px; line-height: 1.6; }
 
+        /* NUEVA CONFIGURACIÓN DE REJILLA EN BASE 12 */
         .svc-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-template-rows: auto auto;
+          grid-template-columns: repeat(12, 1fr);
           gap: 1px;
           background: rgba(255,255,255,0.06);
           border: 1px solid rgba(255,255,255,0.06);
           border-radius: 20px;
           overflow: hidden;
         }
-        @media (max-width: 900px) {
-          .svc-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 560px) {
-          .svc-grid { grid-template-columns: 1fr; }
-        }
 
+        /* Distribución bento box dinámica para evitar huecos */
         .svc-card {
+          grid-column: span 3; /* Fila superior: 4 tarjetas de 3 columnas = 12 total */
           position: relative;
           padding: 36px 32px;
           background: rgba(8, 11, 18, 0.92);
           overflow: hidden;
           cursor: pointer;
-          transition: background 0.3s;
+          transition: background 0.3s, transform 0.25s cubic-bezier(0.16,1,0.3,1);
+          transform-style: preserve-3d;
         }
-        .svc-card:hover { background: rgba(12, 16, 26, 0.98); }
 
-        .svc-card-img {
-          width: 100%;
-          height: 160px;
-          object-fit: cover;
-          border-radius: 10px;
-          margin-bottom: 24px;
-          opacity: 0.85;
-          transition: opacity 0.3s, transform 0.5s;
-          display: block;
+        /* Las últimas 3 tarjetas se ensanchan a 4 columnas para ocupar la fila inferior a la perfección (3 * 4 = 12) */
+        .svc-card:nth-child(n+5) {
+          grid-column: span 4;
         }
-        .svc-card:hover .svc-card-img {
-          opacity: 1;
-          transform: scale(1.02);
+
+        @media (max-width: 1100px) { 
+          .svc-card, .svc-card:nth-child(n+5) { grid-column: span 6; } /* Rejilla de 2 columnas para tablets */
         }
+        @media (max-width: 640px) { 
+          .svc-card, .svc-card:nth-child(n+5) { grid-column: span 12; } /* Rejilla de 1 columna para móviles */
+        }
+
+        .svc-card:hover { background: rgba(12, 16, 26, 0.98); }
+        
+        .svc-card::after {
+          content: ''; position: absolute; inset: 0;
+          background: radial-gradient(360px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.06), transparent 40%);
+          opacity: 0; transition: opacity 0.3s;
+          pointer-events: none;
+        }
+        .svc-card:hover::after { opacity: 1; }
 
         .svc-card-glow {
-          position: absolute;
-          top: 0; right: 0;
-          width: 180px; height: 180px;
+          position: absolute; top: 0; right: 0;
+          width: 200px; height: 200px;
           border-radius: 50%;
-          opacity: 0;
-          transition: opacity 0.4s;
-          pointer-events: none;
-          filter: blur(60px);
+          opacity: 0; transition: opacity 0.4s;
+          pointer-events: none; filter: blur(60px);
           transform: translate(40%, -40%);
         }
-        .svc-card:hover .svc-card-glow { opacity: 0.25; }
+        .svc-card:hover .svc-card-glow { opacity: 0.3; }
 
-        .svc-card-header {
-          display: flex; align-items: center;
-          justify-content: space-between;
-          margin-bottom: 16px;
-        }
+        .svc-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
         .svc-card-icon {
-          width: 40px; height: 40px;
-          border-radius: 10px;
+          width: 44px; height: 44px; border-radius: 12px;
           display: flex; align-items: center; justify-content: center;
           transition: transform 0.3s;
+          border: 1px solid rgba(255,255,255,0.05);
         }
         .svc-card:hover .svc-card-icon { transform: scale(1.1) rotate(-3deg); }
         .svc-card-label {
-          font-size: 0.6875rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          opacity: 0.5;
+          font-size: 0.625rem; font-weight: 700;
+          letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.55;
         }
 
-        .svc-card-title {
-          font-size: 1.125rem;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: #fff;
-          margin-bottom: 10px;
-          line-height: 1.3;
-        }
-        .svc-card-desc {
-          font-size: 0.8125rem;
-          color: rgba(255,255,255,0.45);
-          line-height: 1.65;
-        }
-
-        .svc-card-arrow {
-          position: absolute;
-          bottom: 28px; right: 28px;
-          width: 28px; height: 28px;
-          border-radius: 50%;
-          border: 1px solid rgba(255,255,255,0.1);
-          display: flex; align-items: center; justify-content: center;
-          opacity: 0;
-          transform: translateX(-6px);
-          transition: all 0.3s;
-          color: rgba(255,255,255,0.5);
-        }
-        .svc-card:hover .svc-card-arrow {
-          opacity: 1;
-          transform: translateX(0);
-        }
+        .svc-card-title { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: #fff; margin-bottom: 12px; line-height: 1.3; }
+        .svc-card-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
       `}</style>
 
       <section id="servicios" className="svc-section" ref={sectionRef}>
@@ -223,10 +187,10 @@ export default function Services3D() {
           <div className="svc-header">
             <div>
               <div className="svc-eyebrow">Qué hacemos</div>
-              <h2 className="svc-title">Nuestros<br />Servicios</h2>
+              <h2 className="svc-title">Soluciones de punta<br />a punta</h2>
             </div>
             <p className="svc-subtitle">
-              Soluciones tecnológicas integrales para que tu negocio crezca y destaque.
+              Desde el desarrollo y la automatización hasta el marketing y el soporte: un único equipo que se ocupa de toda la parte tecnológica de tu negocio.
             </p>
           </div>
 
@@ -234,41 +198,23 @@ export default function Services3D() {
             {services.map((svc) => {
               const Icon = svc.icon;
               return (
-                <div key={svc.id} className="svc-card">
-                  <div
-                    className="svc-card-glow"
-                    style={{ background: svc.accent }}
-                  />
-
-                  {svc.image && (
-                    <img
-                      src={svc.image}
-                      alt={svc.title}
-                      className="svc-card-img"
-                      loading="lazy"
-                    />
-                  )}
+                <div
+                  key={svc.id}
+                  className="svc-card"
+                  onMouseMove={handleTilt}
+                  onMouseLeave={resetTilt}
+                >
+                  <div className="svc-card-glow" style={{ background: svc.accent }} />
 
                   <div className="svc-card-header">
-                    <div
-                      className="svc-card-icon"
-                      style={{ background: `${svc.accent}18` }}
-                    >
+                    <div className="svc-card-icon" style={{ background: `${svc.accent}1a` }}>
                       <Icon size={20} style={{ color: svc.accent }} />
                     </div>
-                    <span className="svc-card-label" style={{ color: svc.accent }}>
-                      {svc.label}
-                    </span>
+                    <span className="svc-card-label" style={{ color: svc.accent }}>{svc.label}</span>
                   </div>
 
                   <h3 className="svc-card-title">{svc.title}</h3>
                   <p className="svc-card-desc">{svc.description}</p>
-
-                  <div className="svc-card-arrow">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
                 </div>
               );
             })}
