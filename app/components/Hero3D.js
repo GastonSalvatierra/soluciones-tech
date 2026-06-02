@@ -17,7 +17,6 @@ export default function Hero3D() {
   const particlesRef = useRef([]);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
 
-  // Particle canvas con conexiones tipo "neural mesh"
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -101,7 +100,8 @@ export default function Hero3D() {
       }
       animId = requestAnimationFrame(draw);
     };
-    draw();
+    resize();
+    animId = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
@@ -122,31 +122,29 @@ export default function Hero3D() {
 
   return (
     <>
-     <style>{`
-        /* --- Estructura Principal del Hero --- */
+      <style>{`
         .hero-section { 
           position: relative; 
           min-height: 100svh; 
           display: flex; 
           align-items: center; 
-          overflow: hidden; 
+          overflow: hidden; /* Esto ahora va a funcionar bien porque controlamos el scale */
           background-color: #05070c;
           font-family: system-ui, -apple-system, sans-serif;
         }
 
-        /* --- Efecto de Fondo --- */
         .hero-bg {
           position: absolute; 
           inset: 0;
           background-size: cover; 
           background-position: center 20%;
           background-repeat: no-repeat;
-          transform: scale(1.04);
+          transform: scale(1); /* Evitamos que por defecto rompa el ancho */
           transition: transform 8s ease-out;
         }
-        .hero-section:hover .hero-bg { transform: scale(1); }
+        /* Solo escalamos si estamos seguros de que el contenedor padre corta el desborde */
+        .hero-section:hover .hero-bg { transform: scale(1.03); }
 
-        /* --- Capas de Gradientes y Texturas --- */
         .hero-overlay-1 {
           position: absolute; 
           inset: 0;
@@ -179,7 +177,6 @@ export default function Hero3D() {
           -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
         }
 
-        /* --- Efecto Aurora Glow Blobs --- */
         .hero-aurora {
           position: absolute; 
           inset: 0; 
@@ -208,20 +205,19 @@ export default function Hero3D() {
         @keyframes aurora-1 { from { transform: translate(0,0); } to { transform: translate(80px,-40px); } }
         @keyframes aurora-2 { from { transform: translate(0,0); } to { transform: translate(-100px,-60px); } }
 
-        /* --- Contenedores Generales --- */
         .hero-content {
           position: relative; 
           z-index: 10;
           width: 100%; 
           max-width: 1280px;
           margin: 0 auto;
-          padding: 100px 24px 60px; /* Padding superior corregido para mayor equilibrio */
+          /* Reducimos el padding vertical en mobile/desktop para que no empuje el layout hacia abajo */
+          padding: 80px 24px; 
         }
         .hero-inner { 
-          max-width: 680px; /* Reducido de 720px para contener mejor las líneas de texto */
+          max-width: 680px; 
         }
 
-        /* --- Animación de Entrada Fluida --- */
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
@@ -235,7 +231,6 @@ export default function Hero3D() {
         .delay-3 { animation-delay: 0.45s; }
         .delay-4 { animation-delay: 0.6s; }
 
-        /* --- Badge de Ubicación --- */
         .hero-badge {
           display: inline-flex; 
           align-items: center; 
@@ -258,11 +253,10 @@ export default function Hero3D() {
         @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
         .hero-badge-text { font-size: 0.75rem; font-weight: 600; color: #67e8f9; letter-spacing: 0.06em; text-transform: uppercase; }
 
-        /* --- Tipografía Armónica (Ajustada) --- */
         .hero-h1 {
-          font-size: clamp(2.1rem, 5.2vw, 3.4rem); /* Escalado suavizado para evitar gigantismo */
+          font-size: clamp(2.1rem, 5.2vw, 3.4rem); 
           font-weight: 800; 
-          line-height: 1.15; /* Más separación entre renglones para que respire */
+          line-height: 1.15; 
           letter-spacing: -0.02em;
           color: #fff; 
           margin-bottom: 20px;
@@ -275,19 +269,17 @@ export default function Hero3D() {
           background-clip: text;
         }
         .hero-sub {
-          font-size: clamp(0.95rem, 1.6vw, 1.05rem); /* Proporciones refinadas */
+          font-size: clamp(0.95rem, 1.6vw, 1.05rem); 
           color: rgba(255,255,255,0.65);
           line-height: 1.65; 
           max-width: 580px;
           margin-bottom: 32px;
         }
 
-        /* --- Listado de Beneficios --- */
         .hero-checks { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 36px; }
         .hero-check { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: rgba(255,255,255,0.7); }
         .hero-check-icon { width: 14px; height: 14px; flex-shrink: 0; color: #22d3ee; }
 
-        /* --- Botones y Acciones --- */
         .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
         
         .btn-primary {
@@ -338,22 +330,20 @@ export default function Hero3D() {
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.2); color: #fff; }
 
-        /* --- Indicador Inferior de Scroll --- */
         .hero-scroll {
           position: absolute; 
-          bottom: 36px; 
+          bottom: 20px; /* Ajustado un poco más abajo */
           left: 50%;
           transform: translateX(-50%);
           display: flex; 
           flex-direction: column; 
           align-items: center; 
           gap: 8px;
-          animation: fadeUp 0.8s ease-out 0.8s forwards;
-          opacity: 0;
+          pointer-events: none; /* Evita interferir con los clics */
         }
         .hero-scroll-label { font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
         .hero-scroll-line {
-          width: 1px; height: 48px;
+          width: 1px; height: 32px; /* Reducido de 48px para optimizar espacio */
           background: linear-gradient(to bottom, rgba(6,182,212,0.55), transparent);
           animation: scroll-line 2s ease-in-out infinite;
         }
@@ -361,7 +351,6 @@ export default function Hero3D() {
       `}</style>
 
       <section id="inicio" className="hero-section">
-        {/* Capas de diseño estético de fondo */}
         <div className="hero-bg" style={{ backgroundImage: `url(${typeof HERO_BG !== 'undefined' ? HERO_BG : ''})` }} />
         <div className="hero-overlay-1" />
         <div className="hero-overlay-2" />
@@ -373,27 +362,23 @@ export default function Hero3D() {
         <div className="hero-content">
           <div className="hero-inner">
             
-            {/* Badge Superior */}
-            <div className="hero-badge animate-fade-up">
+            <div className="hero-badge">
               <span className="hero-badge-dot" />
               <span className="hero-badge-text">Soluciones Tech · Buenos Aires</span>
             </div>
 
-            {/* Título Principal */}
-            <h1 className="hero-h1 animate-fade-up delay-1">
+            <h1 className="hero-h1">
               Software, automatización 
               <span className="hero-h1-line2">y crecimiento digital para tu negocio</span>
             </h1>
 
-            {/* Subtítulo descriptivo */}
-            <p className="hero-sub animate-fade-up delay-2">
+            <p className="hero-sub">
               Desarrollamos webs, sistemas a medida, bots con IA y automatizaciones que
               ahorran horas de trabajo. Sumá marketing, publicidad y soporte IT con un
               solo equipo que entiende tu negocio de punta a punta.
             </p>
 
-            {/* Viñetas / Checks */}
-            <div className="hero-checks animate-fade-up delay-3">
+            <div className="hero-checks">
               {highlights.map((h) => (
                 <span key={h} className="hero-check">
                   <CheckCircle2 className="hero-check-icon" size={14} />
@@ -402,8 +387,7 @@ export default function Hero3D() {
               ))}
             </div>
 
-            {/* Botones de acción */}
-            <div className="hero-btns animate-fade-up delay-4">
+            <div className="hero-btns">
               <button
                 className="btn-primary"
                 onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
@@ -422,8 +406,7 @@ export default function Hero3D() {
           </div>
         </div>
 
-        {/* Indicador de scroll */}
-        <div className="hero-scroll">
+        <div className="hero-scroll hero-scroll-element">
           <span className="hero-scroll-label">Scroll</span>
           <div className="hero-scroll-line" />
         </div>

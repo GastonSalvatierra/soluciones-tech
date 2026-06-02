@@ -7,6 +7,15 @@
   --color-accent: oklch(0.577 0.245 27.325);
 }
 
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+}
+
 :root {
   --primary: oklch(0.623 0.214 259.815);
   --secondary: oklch(0.967 0.001 286.375);
@@ -73,5 +82,3 @@
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
-
-*{overflow-x: hidden}
