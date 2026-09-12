@@ -392,7 +392,8 @@ html.lenis body {
 
 /* En pantallas bajas, los contenidos del stack se alinean desde arriba y con
  * más espaciado para que el navbar fijo nunca recorte los títulos; en
- * pantallas altas se mantienen centrados. */
+ * pantallas altas se mantienen centrados. El encabezado se achica para que
+ * el contenido (cards) entre COMPLETO en el viewport del panel. */
 @media (max-height: 820px), (max-width: 767px) {
   [data-stack-index] section {
     justify-content: flex-start;
@@ -403,5 +404,21 @@ html.lenis body {
   [data-stack-index] section > div.mx-auto {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
+  }
+
+  [data-stack-index] [data-section-heading] {
+    margin-bottom: 1.25rem;
+  }
+
+  [data-stack-index] [data-section-heading] h2 {
+    font-size: 1.45rem;
+  }
+}
+
+/* En pantallas muy angostas, la descripción del encabezado se oculta para
+ * que las tarjetas de la sección se vean completas. */
+@media (max-width: 767px) {
+  [data-stack-index] [data-section-heading] p {
+    display: none;
   }
 }

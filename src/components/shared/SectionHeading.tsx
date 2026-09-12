@@ -1,4 +1,3 @@
-import Reveal from "@/components/shared/Reveal";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -17,21 +16,21 @@ export default function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <Reveal
+    /* Bloque único del encabezado: TODO el bloque (eyebrow + título +
+       descripción) queda ESTÁTICO respecto del scroll — los efectos solo
+       mueven el contenido (cards), el título nunca se desplaza ni se desarma. */
+    <div
+      data-section-heading
       className={cn(
-        "mb-10 md:mb-12",
+        "mb-8 md:mb-10",
         align === "center" ? "mx-auto max-w-3xl" : "max-w-3xl",
         className
       )}
     >
-      {/* Bloque único del encabezado: los efectos de scroll mueven TODO el
-          bloque a la vez (eyebrow + título + descripción) para que la
-          composición nunca se desarme. */}
-      <div data-section-heading>
       {eyebrow && (
         <div
           className={cn(
-            "mb-4",
+            "mb-3",
             align === "center"
               ? "flex items-center justify-center gap-3"
               : "flex items-center gap-3"
@@ -49,7 +48,7 @@ export default function SectionHeading({
       )}
       <h2
         className={cn(
-          "display text-[1.85rem] font-semibold leading-[1.06] text-foreground sm:text-[2.5rem] md:text-[3.25rem]",
+          "display text-[1.6rem] font-semibold leading-[1.08] text-foreground sm:text-[2rem] md:text-[2.4rem]",
           align === "center" && "text-center"
         )}
       >
@@ -58,14 +57,13 @@ export default function SectionHeading({
       {description && (
         <p
           className={cn(
-            "mt-4 text-[15px] leading-relaxed text-muted sm:text-base",
+            "mt-3 text-sm leading-relaxed text-muted sm:text-[15px]",
             align === "center" && "mx-auto max-w-xl text-center"
           )}
         >
           {description}
         </p>
       )}
-      </div>
-    </Reveal>
+    </div>
   );
 }

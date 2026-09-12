@@ -29,10 +29,11 @@ const CARRY_AT = 0.62;
 const CARRY_DUR = 0.38;
 const CARRY_EASE = "power2.inOut";
 
-// Alto total del contenedor: cada sección ocupa 145vh de scroll para dar
-// más aire y más tiempo quieto entre transiciones (los efectos internos
-// respiran lento: una ruedita de scroll ≈ media o una card del carrousel).
-const UNIT_VH = 145;
+// Alto total del contenedor: cada sección ocupa 275vh de scroll para dar el
+// DOBLE de aire que antes (145vh): las transiciones (carry) se ven 2x más
+// lentas y los efectos internos respiran el doble de lento. Mientras más alto
+// UNIT_VH, más scroll necesita el usuario para cruzar toda la web.
+const UNIT_VH = 275;
 
 /**
  * StackFlow: pila de secciones a pantalla completa con scroll scrubeado.
@@ -64,11 +65,9 @@ export default function StackFlow({ panels, className }: StackFlowProps) {
         start: "top top",
         end: "bottom bottom",
         scrub: 1.2,
-        snap: {
-          snapTo: 1 / total,
-          duration: { min: 0.08, max: 0.3 },
-          ease: "power2.inOut",
-        },
+        // SIN snap: el snap de ScrollTrigger pelea con el smooth-scroll de
+        // Lenis y hace que el scroll "se pegue" / salte de sección cuando
+        // uno se detiene cerca de un borde. Arrancado es mucho más natural.
       },
       defaults: { ease: "none" },
     });

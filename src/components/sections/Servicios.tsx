@@ -113,9 +113,9 @@ function MarqueeEnergy() {
 export default function Servicios() {
   // EFECTO: "carrousel infinito" — los servicios corren en UNA sola fila
   // horizontal y, al scrollear la sección, la tira se desplaza hacia la
-  // izquierda exactamente un juego (las 6 tarjetas están duplicadas, así la
-  // llegada encadena con el inicio: bucle perfecto). El desplazamiento se
-  // re-mide cada frame, así es responsive a cualquier breakpoint.
+  // izquierda repartido en TODA la unidad (las 6 tarjetas están duplicadas,
+  // así el bucle es imperceptible). El desplazamiento se re-mide cada frame,
+  // así es responsive a cualquier breakpoint.
   const sectionRef = useStackSection(
     () => null,
     [],
@@ -142,9 +142,7 @@ export default function Servicios() {
       // Smoothstep: arranque y frenado suaves (se siente más lento).
       const e = p * p * (3 - 2 * p);
       gsap.set(strip, { x: -travel * e });
-      // El título entero va a contracorriente de la tira (desplazamiento de
-      // contraste) moviéndose como UN bloque: nada se desarma.
-      gsap.set(section.querySelector("[data-section-heading]"), { x: 32 * e });
+      // El título queda QUIETO: solo se mueve la tira de servicios.
     }
   );
 

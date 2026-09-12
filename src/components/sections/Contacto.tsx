@@ -11,10 +11,10 @@ import { useStackSection } from "@/components/shared/useStackSection";
 import { siteConfig, waIntent } from "@/lib/config";
 
 const inputClasses =
-  "w-full rounded-xl border border-line bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted/50 transition-all duration-300 focus:border-accent/40 focus:shadow-[0_0_20px_rgba(0,255,241,0.08)] focus:outline-none";
+  "w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 transition-all duration-300 focus:border-accent/40 focus:shadow-[0_0_20px_rgba(0,255,241,0.08)] focus:outline-none";
 
 const channelClass =
-  "group flex items-center gap-4 rounded-xl border border-line bg-card/50 p-4 transition-all duration-300 hover:border-accent/30 hover:bg-card";
+  "group flex items-center gap-4 rounded-xl border border-line bg-card/50 p-3.5 transition-all duration-300 hover:border-accent/30 hover:bg-card sm:p-4";
 
 export default function Contacto() {
   // EFECTO: "contra-parallax" — formulario hacia la izquierda, vías de
@@ -59,11 +59,11 @@ export default function Contacto() {
           description="Completá el formulario y seguimos por WhatsApp. Respondemos en menos de 24 horas, sin vueltas."
         />
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           {/* Formulario */}
           <Reveal direction="left">
-            <div className="rounded-2xl border border-line bg-card/70 p-5 backdrop-blur-sm md:p-6">
-              <form className="space-y-3" onSubmit={handleSubmit}>
+            <div className="rounded-2xl border border-line bg-card/70 p-4 backdrop-blur-sm sm:p-6">
+              <form className="space-y-2.5" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="nombre"
@@ -109,7 +109,7 @@ export default function Contacto() {
                   <textarea
                     id="mensaje"
                     name="mensaje"
-                    rows={3}
+                    rows={2}
                     placeholder="Contanos qué necesitás..."
                     className={`${inputClasses} resize-none`}
                   />
@@ -117,13 +117,13 @@ export default function Contacto() {
                 <Magnetic strength={0.18} className="w-full">
                   <button
                     type="submit"
-                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-background transition-all duration-300 hover:shadow-[0_0_32px_rgba(0,255,241,0.35)] hover:brightness-110"
+                    className="group flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-sm font-semibold text-background transition-all duration-300 hover:shadow-[0_0_32px_rgba(0,255,241,0.35)] hover:brightness-110"
                   >
                     <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     Enviar por WhatsApp
                   </button>
                 </Magnetic>
-                <p className="text-center text-xs text-muted/70">
+                <p className="hidden text-center text-xs text-muted/70 sm:block">
                   Al enviar, te redirigimos a WhatsApp para continuar la charla.
                 </p>
               </form>
@@ -132,8 +132,8 @@ export default function Contacto() {
 
           {/* Vías de contacto */}
           <Reveal direction="right" delay={0.12}>
-            <div className="flex h-full flex-col justify-center gap-3">
-              <p className="text-base text-muted">
+            <div className="flex h-full flex-col justify-center gap-2.5">
+              <p className="hidden text-base text-muted sm:block">
                 También podés escribinos directo:
               </p>
 

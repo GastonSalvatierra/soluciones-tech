@@ -12,7 +12,7 @@ const stepIcons = [MessageSquare, Code2, Rocket];
 
 export default function Proceso() {
   // EFECTO: "carga de energía" — la línea central se carga de arriba a abajo
-  // (scaleY) y cada paso se incorpora en secuencia, con el título deslizándose.
+  // (scaleY) y cada paso se incorpora en secuencia. El título queda QUIETO.
   const sectionRef = useStackSection((section) => {
     const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
     const line = section.querySelector<HTMLElement>("[data-proceso-line]");
@@ -25,7 +25,6 @@ export default function Proceso() {
       const at = i / steps.length;
       tl.fromTo(s, { y: 36, scale: 0.95 }, { y: 0, scale: 1, duration: 1 }, at);
     });
-    tl.to(section.querySelector("[data-section-heading]"), { x: -26, duration: 1 }, 0);
     return tl;
   });
 

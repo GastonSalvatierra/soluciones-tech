@@ -9,14 +9,13 @@ import { siteConfig } from "@/lib/config";
 
 export default function Testimonios() {
   // EFECTO: "cascada" — las citas ascienden cada una a distinta velocidad y
-  // distancia (escalera vertical), con el título desplazándose al otro lado.
+  // distancia (escalera vertical). El título queda QUIETO.
   const sectionRef = useStackSection((section) => {
     const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
     const cards = section.querySelectorAll<HTMLElement>("figure");
     cards.forEach((c, i) => {
       tl.to(c, { y: -(12 + i * 18), duration: 1 }, 0);
     });
-    tl.to(section.querySelector("[data-section-heading]"), { x: 22, duration: 1 }, 0);
     return tl;
   });
 
@@ -39,21 +38,21 @@ export default function Testimonios() {
           description="No vendemos ideas: entregamos soluciones medidas. Así fue para quienes ya trabajan con nosotros."
         />
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {siteConfig.testimonials.map((testimonial, i) => (
             <Reveal key={testimonial.name} delay={i * 0.08}>
-              <figure className="flex h-full flex-col rounded-2xl border border-line bg-card/60 p-5 backdrop-blur-sm transition-all duration-500 hover:border-accent/25 hover:bg-card">
-                <div className="mb-3 flex gap-1">
+              <figure className="flex h-full flex-col rounded-2xl border border-line bg-card/60 p-4 backdrop-blur-sm transition-all duration-500 hover:border-accent/25 hover:bg-card sm:p-5">
+                <div className="mb-2.5 flex gap-1 sm:mb-3">
                   {[...Array(5)].map((_, j) => (
                     <Star key={j} className="h-3.5 w-3.5 fill-accent text-accent" />
                   ))}
                 </div>
 
-                <blockquote className="line-clamp-4 flex-1 text-sm leading-relaxed text-muted">
+                <blockquote className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted sm:line-clamp-4">
                   &ldquo;{testimonial.text}&rdquo;
                 </blockquote>
 
-                <figcaption className="mt-4 flex items-center gap-3 border-t border-line pt-3.5">
+                <figcaption className="mt-3 flex items-center gap-3 border-t border-line pt-3 sm:mt-4 sm:pt-3.5">
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-accent/30 to-accent/5 font-mono text-xs font-semibold text-accent">
                     {testimonial.name
                       .split(" ")
