@@ -1,0 +1,407 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #0e0e14;
+  --bg-surface: #12121a;
+  --bg-elevated: #16161f;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --accent: #00fff1;
+  --accent-dim: rgba(0, 255, 241, 0.55);
+  --accent-glow: rgba(0, 255, 241, 0.18);
+}
+
+@theme inline {
+  /* Tipografía estilo Apple / iPhone: SF Pro en Apple, Segoe Variable en Windows */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Segoe UI Variable Display", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  --font-display: var(--font-display), var(--font-sans);
+
+  --color-background: var(--bg-primary);
+  --color-surface: var(--bg-secondary);
+  --color-card: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-foreground: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-line: var(--border-subtle);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-feature-settings:
+    "ss01" on, "ss02" on, "cv01" on, "cv03" on, "cv04" on;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Jerarquía tipográfica con tracking óptico ---------- */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-feature-settings:
+    "ss01" on, "ss02" on, "cv01" on, "cv03" on, "cv04" on;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  letter-spacing: -0.03em;
+}
+
+p {
+  letter-spacing: -0.01em;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+::selection {
+  background: rgba(0, 255, 241, 0.25);
+  color: #ffffff;
+}
+
+/* ---------- Lenis (smooth scroll) ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------- Glassmorphism ---------- */
+.glass {
+  background: rgba(14, 14, 20, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Textos ---------- */
+.text-gradient {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.75) 55%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Eyebrow / etiqueta mono de sección */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* Etiqueta mono técnica (numeración, códigos, métricas) */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Display apretado para títulos grandes */
+.display {
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.text-accent-gradient {
+  background: linear-gradient(100deg, #00fff1 0%, #8cffed 45%, #f4f4f5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-glow {
+  text-shadow:
+    0 0 18px rgba(0, 255, 241, 0.55),
+    0 0 46px rgba(0, 255, 241, 0.25);
+}
+
+/* ---------- Borde de energía (conic beam animado) ---------- */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.beam {
+  position: relative;
+  --beam-angle: 0deg;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    rgba(255, 255, 255, 0.04),
+    rgba(0, 255, 241, 0.85) 20%,
+    rgba(0, 255, 241, 0.25) 32%,
+    rgba(255, 255, 255, 0.04) 55%
+  );
+  animation: beam-spin 3.6s linear infinite;
+}
+
+.beam-inner {
+  position: relative;
+  z-index: 1;
+  display: block;
+  border-radius: 9999px;
+  margin: 1px;
+  background: #0b0b10;
+}
+
+@keyframes beam-spin {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+/* ---------- Sheen: brillo que barre la card ---------- */
+.card-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(0, 255, 241, 0.14) 50%,
+    transparent 60%
+  );
+  background-size: 220% 100%;
+  transition: opacity 0.4s ease;
+}
+
+.card-sheen:hover::before {
+  opacity: 1;
+  animation: sheen-sweep 1s ease forwards;
+}
+
+@keyframes sheen-sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- Spotlight: luz que sigue al cursor ---------- */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(0, 255, 241, 0.08),
+    transparent 45%
+  );
+}
+
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- Línea de energía: carga que fluye ---------- */
+.energy-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.energy-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 255, 241, 0.9) 35%,
+    rgba(0, 255, 241, 0.9) 65%,
+    transparent 100%
+  );
+  background-size: 100% 300%;
+  background-position: 0% 100%;
+  animation: energy-flow 2.4s linear infinite;
+  opacity: 0.55;
+}
+
+@keyframes energy-flow {
+  from {
+    background-position: 0% 100%;
+  }
+  to {
+    background-position: 0% 0%;
+  }
+}
+
+/* ---------- Grano / textura ---------- */
+.noise::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0, 255, 241, 0.5);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 8px rgba(0, 255, 241, 0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes hint-drop {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(400%);
+  }
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.6;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  75% {
+    opacity: 0.7;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2.2s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+.animate-hint-drop {
+  animation: hint-drop 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.animate-ring-spin {
+  animation: ring-spin 24s linear infinite;
+}
+
+.animate-flicker {
+  animation: flicker 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-pulse-dot,
+  .animate-marquee,
+  .animate-ring-spin,
+  .animate-flicker,
+  .animate-hint-drop,
+  .beam,
+  .card-sheen::before,
+  .energy-line::after {
+    animation: none !important;
+  }
+}
+
+/* En pantallas bajas, los contenidos del stack se alinean desde arriba y con
+ * más espaciado para que el navbar fijo nunca recorte los títulos; en
+ * pantallas altas se mantienen centrados. */
+@media (max-height: 820px), (max-width: 767px) {
+  [data-stack-index] section {
+    justify-content: flex-start;
+    padding-top: 5.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  [data-stack-index] section > div.mx-auto {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+}
